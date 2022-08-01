@@ -1,13 +1,13 @@
 -- CREATE USER TABLE-------------
 CREATE TABLE users (
     id          SERIAL PRIMARY KEY,
-    email       TEXT NOT NULL UNIQUE CHECK(POSITION('@' IN email) > 1),
-    username    TEXT NOT NULL,
-    password    TEXT NOT NULL,
-    first_name  TEXT NOT NULL,
-    last_name   TEXT NOT NULL,
-    location    TEXT NOT NULL,
-    profile_image_URL TEXT,
+    email       VARCHAR(250) NOT NULL UNIQUE CHECK(POSITION('@' IN email) > 1),
+    username    VARCHAR(250) NOT NULL UNIQUE,
+    password    VARCHAR(250) NOT NULL,
+    first_name  VARCHAR(250) NOT NULL,
+    last_name   VARCHAR(250) NOT NULL,
+    location    VARCHAR(250) NOT NULL,
+    profile_image_URL VARCHAR(250),
     created_at  TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at  TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -17,13 +17,13 @@ CREATE TABLE users (
 -------------------  CREATE AND SEED BEGINNER COURSES ----------------------
 CREATE TABLE BeginnerCourses (
     id                          SERIAL PRIMARY KEY,
-    sport_name                  TEXT NOT NULL,
-    beginner_history_timeline   TEXT NOT NULL,
-    beginner_rules              TEXT NOT NULL,
-    beginner_short_description  TEXT NOT NULL,
-    beginner_cover_image_URL    TEXT NOT NULL,
-    beginner_tutorial_video_URL TEXT NOT NULL,
-    beginner_field_diagram_URL  TEXT NOT NULL,
+    sport_name                  VARCHAR(500) NOT NULL,
+    beginner_history_timeline   VARCHAR(1000) NOT NULL,
+    beginner_rules              VARCHAR(5000) NOT NULL,
+    beginner_short_description  VARCHAR(1500) NOT NULL,
+    beginner_cover_image_URL    VARCHAR(500) NOT NULL,
+    beginner_tutorial_video_URL VARCHAR(1000) NOT NULL,
+    beginner_field_diagram_URL  VARCHAR(500) NOT NULL,
     created_at                  TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -32,15 +32,15 @@ CREATE TABLE BeginnerCourses (
 ------------------------CREATE AND STORE ALL USER CREATED COURSES-----------------------------------------------------
 CREATE TABLE UserCreatedCourses (
     id                          SERIAL PRIMARY KEY,
-    sport_name                  TEXT NOT NULL,
+    sport_name                  VARCHAR(5000) NOT NULL,
     user_id                     INTEGER NOT NULL,
-    course_title                TEXT NOT NULL,
-    course_short_description    TEXT NOT NULL,
-    course_cover_image_URL 	    TEXT NOT NULL,
-    course_content              TEXT NOT NULL,
-    course_tutorial_video_URL   TEXT NOT NULL,
-    course_tips_tricks          TEXT NOT NULL,
-    difficulty                  TEXT NOT NULL,
+    course_title                VARCHAR(5000) NOT NULL,
+    course_short_description    VARCHAR(5000) NOT NULL,
+    course_cover_image_URL 	VARCHAR(5000)  NOT NULL,
+    course_content              VARCHAR(5000) NOT NULL,
+    course_tips_tricks          VARCHAR(5000) NOT NULL,
+    difficulty                  VARCHAR(5000) NOT NULL,
+    course_tutorial_video_URL   VARCHAR(5000),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     created_at                  TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -51,11 +51,11 @@ CREATE TABLE UserCreatedCourses (
 ------------------------CREATE AND STORE ALL USER FOLLOWING ACTIVITY-----------------------------------------------------
 CREATE TABLE UsersFollowingTeam (
     id                          SERIAL PRIMARY KEY,
-    team_name                   TEXT NOT NULL,
-    team_logo                   TEXT NOT NULL,
+    team_name                   VARCHAR(250) NOT NULL,
+    team_logo                   VARCHAR(250) NOT NULL,
     team_id                     INTEGER NOT NULL,
-    team_league                 TEXT NOT NULL,
-    team_sport_name             TEXT NOT NULL,
+    team_league                 VARCHAR(250) NOT NULL,
+    team_sport_name             VARCHAR(250) NOT NULL,
     user_id                     INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     following_at                TIMESTAMP NOT NULL DEFAULT NOW()
@@ -210,7 +210,7 @@ VALUES (0,
 ----------SEED DATA INTO USER CREATED COURSES FOR DEMO/POD SYNC PURPOSES-------------------------------
 
 INSERT INTO UserCreatedCourses (id, sport_name, user_id, course_title, course_short_description, course_cover_image_URL, course_content, course_tutorial_video_URL, course_tips_tricks, difficulty)
-VALUES (1,
+VALUES (-2,
         'Basketball',
         0,
         'How to Shoot Like Steph',
@@ -223,7 +223,7 @@ VALUES (1,
         );
 
 INSERT INTO UserCreatedCourses (id, sport_name, user_id, course_title, course_short_description, course_cover_image_URL, course_content, course_tutorial_video_URL, course_tips_tricks, difficulty)
-VALUES (2,
+VALUES (-1,
         'Basketball',
         0,
         'How to Play Like Lebron',
@@ -236,7 +236,7 @@ VALUES (2,
         );
 
 INSERT INTO UserCreatedCourses (id, sport_name, user_id, course_title, course_short_description, course_cover_image_URL, course_content, course_tutorial_video_URL, course_tips_tricks, difficulty)
-VALUES (3,
+VALUES (0,
         'Soccer',
         0,
         'How to Dribble Like Messi',
@@ -250,26 +250,4 @@ VALUES (3,
 
 
 
-----------SEED DATA INTO UsersFollowingTeam FOR DEMO/POD SYNC PURPOSES-------------------------------
-
-INSERT INTO UsersFollowingTeam (id, team_name, team_logo, team_id, team_league, team_sport_name, user_id)
-VALUES (1,
-        'Minnesota Twins',
-        'https://media.api-sports.io/baseball/teams/22.png',
-        22,
-        'MLB',
-        'baseball',
-        0
-        );
-
-
-INSERT INTO UsersFollowingTeam (id, team_name, team_logo, team_id, team_league, team_sport_name, user_id)
-VALUES (2,
-        'Cleveland Cavaliers',
-        'https://media.api-sports.io/basketball/teams/137.png',
-        137,
-        'NBA',
-        'basketball',
-        0
-        );
 
